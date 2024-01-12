@@ -13,3 +13,14 @@ code {
     monospace;
 }
 
+.header-sort{
+  width: 5%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.header-sort i{
+  color: #fff;
+  font-size: 24px;
+}
+

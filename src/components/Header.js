@@ -26,7 +26,12 @@ const Header = () => {
                 </NavDropdown>
               </Nav>
             </Navbar.Collapse>
+          <div className="header-sort">
+            <i class="fa-solid fa-arrow-up"></i>
+            <i class="fa-solid fa-arrow-down"></i>
+          </div>
           </Container>
+          
         </Navbar>
       );
 }

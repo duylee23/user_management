@@ -68,10 +68,9 @@ const TableUsers = () => {
     }
 
     const handleDeleteUserFromModal = (deletedUser) => {
-     let updatedListUsers = listUsers.filter((item) => item.id  !== +deletedUser.id)
+      let updatedListUsers = listUsers.filter((item) => item.id  !== +deletedUser.id)
       setListUsers(updatedListUsers)
       toast.success('Delete user successfully!')
-
     }
 
 
@@ -84,6 +83,7 @@ const TableUsers = () => {
         <Table bordered hover>
           <thead>
             <tr>
+              
               <th>id</th>
               <th>Avatar</th>
               <th>First Name</th>
