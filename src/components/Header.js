@@ -5,7 +5,10 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import logo from '../assets/images/logo2.png'
 import './Header.scss'
+import { useLocation, NavLink } from "react-router-dom";
+
 const Header = () => {
+    const location = useLocation()
     return (
         <Navbar expand="lg" className="navbar">
           <Container className="d-flex align-items-center">
@@ -15,9 +18,9 @@ const Header = () => {
               </Navbar.Brand> 
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="me-auto" activeKey={'/users'}>
-                <Nav.Link href="/" >Home</Nav.Link>
-                <Nav.Link href="/users">Manage User</Nav.Link>
+              <Nav className="me-auto" activeKey={location.pathname}>
+                  <NavLink to={'/'} className='nav-link'>Home</NavLink>
+                  <NavLink to={'/users'} className='nav-link'> Manage users</NavLink>
               </Nav>
               <Nav>
                 <Nav.Link href="#link">Login</Nav.Link>
