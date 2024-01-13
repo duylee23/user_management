@@ -11,6 +11,7 @@ import './TableUser.scss'
 import _ from 'lodash';
 import { debounce } from 'lodash';
 import { CSVLink, CSVDownload } from 'react-csv';
+import Papa from 'papaparse'
 const TableUsers = () => {
 
     const [listUsers, setListUsers] = useState([])
@@ -23,6 +24,8 @@ const TableUsers = () => {
     const [sortBy, setSortBy] = useState('asc')
     const [sortField, setSortField] = useState('id')
     const [dataUserDelete, setDataUserDelete] = useState({})
+    const [dataExport, setDataExport] = useState([])
+
     useEffect(() => {
         getUsers()
     }, [])
@@ -98,29 +101,62 @@ const TableUsers = () => {
       }
     }, 300)
 
-    const csvData = [
-      ["firstname", "lastname", "email"],
-      ["Ahmed", "Tomi", "ah@smthing.co.com"],
-      ["Raed", "Labes", "rl@smthing.co.com"],
-      ["Yezzi", "Min l3b", "ymin@cocococo.com"]
-    ];
+    const getUsersExport = (event, done) => {
+      let result = []
+      if (listUsers && listUsers.length > 0 ) {
+        result.push(["Id", "Email", "First name", "Last name"])
+        listUsers.map((item, index) => {
+          let arr = []
+          arr[0] = item.id
+          arr[1] = item.email
+          arr[2] = item.first_name
+          arr[3] = item.last_name
+          result.push(arr)
+        })
+        setDataExport(result)
+        done();
+      }
+    }
+
+    const handleImportCsv = (event) => {
+      if(event.target && event.target.files && event.target.files[0]) {
+        let file = event.target.files[0]
+        if(file.type !== "text/csv"){
+          toast.error('Only accept text/csv file !')
+          return;
+        } else{
+          //Parse local csv file
+          Papa.parse(file, {
+            header: true,
+            complete: function(results) {
+              console.log('finished: ', results.data)
+            }
+          })
+        }
+      }
+    }
+
+
 
     return (    
     <>
         <div className='my-3 d-flex justify-content-between align-items-center'>
           <span>LIST USERS:</span>
-          <div className='d-flex justify-content-around w-50'>
-            <button className='btn btn-warning'>
-              <i class="fa-solid fa-file-import px-2"></i>
-              <span>Import user file</span>
-            </button>
-            <CSVLink data={csvData}  
+          <div className='group-btns d-flex justify-content-around w-50 align-items-center'>
+    
+              <label htmlFor='test' className='btn btn-warning'>
+                <i className="fa-solid fa-file-import px-2"></i>
+                <span>Import user file</span>
+              </label>
+              <input id='test' type='file' onChange={(event) => handleImportCsv(event)} hidden />
+            <CSVLink data={dataExport}  
                       filename={"users.csv"}
+                      asyncOnClick={true}
+                      onClick={(event, done) => getUsersExport(event, done)}
                       className="btn btn-primary">
                           <i class="fa-solid fa-file-arrow-down px-2"></i>
                           <span>Export user file</span>
             </CSVLink>
-
             <button className='btn btn-success add-button' onClick={() => setIsShowedModalAddNew(true)}>
               <i className="fa-solid fa-circle-plus"></i>
                 <span> Add new</span>
