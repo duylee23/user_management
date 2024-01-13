@@ -1,0 +1,29 @@
+
+.id-container{
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.header-sort-icons {
+  display: flex;
+  justify-content: space-around;
+  padding: 4px;
+}
+
+.header-sort-icons i {
+  color: #333;
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 4px;
+  transition: ease 0.2s;
+}
+.header-sort-icons i:hover{
+  color: rgb(4, 109, 95);
+  
+}
+
+.search-container{
+  margin: 12px 0;
+  width: 50%;
+}

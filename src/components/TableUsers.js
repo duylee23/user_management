@@ -7,7 +7,10 @@ import ModalAddNew from './ModalAddNew';
 import ModalEdit from './ModalEdit';
 import { toast } from 'react-toastify';
 import ModalConfirm from './ModalConfirm';
-
+import './TableUser.scss'
+import _ from 'lodash';
+import { debounce } from 'lodash';
+import { CSVLink, CSVDownload } from 'react-csv';
 const TableUsers = () => {
 
     const [listUsers, setListUsers] = useState([])
@@ -17,6 +20,8 @@ const TableUsers = () => {
     const [isShowdedModalEdit, setIsShowedModalEdit] = useState(false)
     const [isShowedModalConfirm, setIsShowedModalConfirm] = useState(false)
     const [dataUserEdit, setDataUserEdit] = useState({})
+    const [sortBy, setSortBy] = useState('asc')
+    const [sortField, setSortField] = useState('id')
     const [dataUserDelete, setDataUserDelete] = useState({})
     useEffect(() => {
         getUsers()
@@ -73,20 +78,86 @@ const TableUsers = () => {
       toast.success('Delete user successfully!')
     }
 
+    const handleSort = (sortBy, sortField) => {
+      setSortBy(sortBy)
+      setSortField(sortField)
+      let cloneListUsers = [...listUsers]
+      cloneListUsers =_.orderBy(cloneListUsers, [sortField], [sortBy])
+      setListUsers(cloneListUsers)
+    }
+
+    const handleSearch = debounce((event) => {
+      let keyword = event.target.value
+      console.log(keyword)
+      if(keyword){
+        let cloneListUsers = [...listUsers]
+        cloneListUsers = cloneListUsers.filter(item => item.email.includes(keyword))
+        setListUsers(cloneListUsers)
+      } else {
+        getUsers(1)
+      }
+    }, 300)
+
+    const csvData = [
+      ["firstname", "lastname", "email"],
+      ["Ahmed", "Tomi", "ah@smthing.co.com"],
+      ["Raed", "Labes", "rl@smthing.co.com"],
+      ["Yezzi", "Min l3b", "ymin@cocococo.com"]
+    ];
 
     return (    
     <>
         <div className='my-3 d-flex justify-content-between align-items-center'>
           <span>LIST USERS:</span>
-          <button className='btn btn-success' onClick={() => setIsShowedModalAddNew(true)}>Add new user</button>
+          <div className='d-flex justify-content-around w-50'>
+            <button className='btn btn-warning'>
+              <i class="fa-solid fa-file-import px-2"></i>
+              <span>Import user file</span>
+            </button>
+            <CSVLink data={csvData}  
+                      filename={"users.csv"}
+                      className="btn btn-primary">
+                          <i class="fa-solid fa-file-arrow-down px-2"></i>
+                          <span>Export user file</span>
+            </CSVLink>
+
+            <button className='btn btn-success add-button' onClick={() => setIsShowedModalAddNew(true)}>
+              <i className="fa-solid fa-circle-plus"></i>
+                <span> Add new</span>
+            </button>
+          </div>
+          
         </div>
+        <div className='search-container'>
+            <input  className='form-control' 
+                    placeholder='Search user by email' 
+                    onChange={(event) => handleSearch(event)}
+            />
+        </div>
+        
         <Table bordered hover>
           <thead>
             <tr>
               
-              <th>id</th>
+              <th>
+                <div className='id-container'>
+                  <span>ID</span>
+                  <div className="header-sort-icons">
+                    <i className="fa-solid fa-arrow-up" onClick={() => handleSort("asc", "id")}></i>
+                    <i className="fa-solid fa-arrow-down" onClick={() => handleSort("desc", "id")}></i>
+                  </div>
+                </div>
+              </th>
               <th>Avatar</th>
-              <th>First Name</th>
+              <th>
+                <div className='id-container'>
+                  <span>First name</span>
+                  <div className="header-sort-icons">
+                    <i className="fa-solid fa-arrow-up" onClick={() => handleSort("asc", "first_name")}></i>
+                    <i className="fa-solid fa-arrow-down" onClick={() => handleSort("desc", "first_name")}></i>
+                  </div>
+                </div>
+              </th>
               <th>Last Name</th>
               <th>Email</th>
               <th>Actions</th>
@@ -105,8 +176,8 @@ const TableUsers = () => {
                     <td>{item.email}</td>
                     <td> 
                       <div className='d-flex justify-content-center'>
-                        <button type="button" class="btn btn-primary mx-2" onClick={() => handleEditUser(item)}>EDIT</button>
-                        <button type="button" class="btn btn-danger" onClick = {() => handleDeleteUser(item)}>DELETE</button>
+                        <button type="button" className="btn btn-primary mx-2" onClick={() => handleEditUser(item)}>EDIT</button>
+                        <button type="button" className="btn btn-danger" onClick = {() => handleDeleteUser(item)}>DELETE</button>
                       </div>
                     </td>
                   </tr>
