@@ -23,8 +23,8 @@ const Header = () => {
                   <NavLink to={'/users'} className='nav-link'> Manage users</NavLink>
               </Nav>
               <Nav>
-                <Nav.Link href="#link">Login</Nav.Link>
-                <Nav.Link href="#link">Logout</Nav.Link>
+                <NavLink to="/login" className='nav-link'>Login</NavLink>
+                <NavLink to="/logout" className='nav-link'>Logout</NavLink>
               </Nav>
             </Navbar.Collapse>
           </Container>

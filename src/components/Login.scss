@@ -1,0 +1,82 @@
+.login-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 20px auto;
+
+
+    .password-container{
+        position: relative;
+        i{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            cursor: pointer;
+            padding: 9px 15px 9px 9px;
+        }
+        &:hover{
+            color: #00754A;
+        }
+    }
+
+    input{
+        padding: 5px;
+        margin-bottom: 10px;
+        outline: none;
+        border: 1px #9c9c9c solid;
+        border-radius: 5px;
+        width: 100%;
+        &:hover{
+            background-color: #b4f1c6;
+        }
+    }
+
+
+
+    button {
+        border: none;
+        background-color: #c7c7c7;
+        border-radius: 3px;
+        padding: 10px 0;
+        margin-top: 10px;
+
+        &.active{
+            background-color: #00754A;
+            color: #fff;
+        }
+        &:disabled{
+            cursor: not-allowed;
+        }   
+    }
+    .title {
+        text-align: center;
+        font-weight: 700;
+        font-size: 22px;
+        color: #00754A;
+        
+    }
+
+    .text{
+        font-weight: 600;
+    }
+
+    .go-back {
+        text-align: center;
+        margin-top: 10px;
+        font-weight: 600;
+ 
+
+        &:hover{
+            text-decoration: underline;
+            cursor: pointer;
+            color: #00754A;
+
+        }
+    }
+}
+
+
+
+
+
