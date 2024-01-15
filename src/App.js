@@ -6,7 +6,13 @@ import Home from './components/Home';
 import { ToastContainer, toast } from 'react-toastify';
 import {Routes, Route, Link} from 'react-router-dom'
 import Login from './components/Login';
+import { useContext } from 'react';
+import { UserContext } from './context/UserContext';
+
+
+
 function App() {
+  const {user} = useContext(UserContext)
 
   return (
     <>

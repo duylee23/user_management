@@ -1,14 +1,29 @@
-import React from "react";
+import React, { useContext } from "react";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import logo from '../assets/images/logo2.png'
 import './Header.scss'
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import { UserContext } from "../context/UserContext";
+
 
 const Header = () => {
     const location = useLocation()
+    const navigate = useNavigate()
+
+    const {user, logout} = useContext(UserContext)
+    
+    const handleLogout = () => {
+      logout()
+      if(!localStorage.getItem('token')) {
+        navigate('/')
+        toast.success('Log out successfully!')
+      }
+      
+    }
     return (
         <Navbar expand="lg" className="navbar">
           <Container className="d-flex align-items-center">
@@ -23,8 +38,10 @@ const Header = () => {
                   <NavLink to={'/users'} className='nav-link'> Manage users</NavLink>
               </Nav>
               <Nav>
-                <NavLink to="/login" className='nav-link'>Login</NavLink>
-                <NavLink to="/logout" className='nav-link'>Logout</NavLink>
+                { user && user.auth === true?   <NavLink  className='nav-link' onClick={() => handleLogout()}>Logout</NavLink>
+                :  <NavLink to="/login" className='nav-link'>Login</NavLink>
+                }
+               
               </Nav>
             </Navbar.Collapse>
           </Container>
